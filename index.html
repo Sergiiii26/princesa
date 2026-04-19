@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para ti 💫</title>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+  background: black; 
+  }
+
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+
+.contenido {
+  position: relative;
+  top: 20%;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+p {
+  font-size: 1.5em;
+  max-width: 600px;
+  margin: auto;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 20px;
+  background: #6c5ce7;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #a29bfe;
+  transform: scale(1.1);
+}
+
+/* Imagen */
+img {
+  width: 250px;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+</style>
+
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="contenido">
+  <h1>Para ti 💫</h1>
+
+  <p id="mensaje">
+    En un universo infinito... tuve la suerte de encontrarte ❤️
+  </p>
+
+  <button onclick="sorpresa()">Haz clic aquí</button>
+
+  <p id="extra"></p>
+
+  <!-- CAMBIA LA FOTO -->
+  <img src="foto.jpg" alt="nosotros">
+</div>
+
+<script>
+
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2,
+    speed: Math.random() * 0.5
+  });
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+
+  stars.forEach(s => {
+    ctx.fillRect(s.x, s.y, s.size, s.size);
+    s.y += s.speed;
+
+    if (s.y > canvas.height) {
+      s.y = 0;
+      s.x = Math.random() * canvas.width;
+    }
+  });
+
+  requestAnimationFrame(drawStars);
+}
+
+drawStars();
+
+
+
+function sorpresa() {
+  document.getElementById("extra").innerHTML =
+    "Eres mi estrella favorita en todo el universo ✨❤️";
+}
+
+
+const inicio = new Date("2024-02-20"); // 
+function diasJuntos() {
+  const hoy = new Date();
+  const diff = hoy - inicio;
+  const dias = Math.floor(diff / (1000*60*60*24));
+
+  document.getElementById("extra").innerHTML +=
+    "<br><br>Llevamos " + dias + " días juntos 💕";
+}
+
+setTimeout(diasJuntos, 2000);
+
+</script>
+
+</body>
+</html>
