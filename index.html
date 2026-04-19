@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para ti Princesa💫</title>
+
+<style>
+body {
+  margin: 0;
+   overflow-x: hidden; 
+  overflow-y: auto;   
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+  background: black; 
+  }
+
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+
+.contenido {
+  position: relative;
+  top: 20%;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+p {
+  font-size: 1.5em;
+  max-width: 600px;
+  margin: auto;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 20px;
+  background: #6c5ce7;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #a29bfe;
+  transform: scale(1.1);
+}
+
+
+img {
+  width: 250px;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+#quiz {
+  margin-top: 30px;
+}
+
+#quiz button {
+  margin: 5px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+#quiz button:hover {
+  transform: scale(1.1);
+}
+</style>
+
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="contenido">
+  <h1>Para ti Princesa💫</h1>
+
+  <p id="mensaje">
+    En un universo infinito, tuve la suerte de encontrarte ❤️
+  </p>
+
+  <button onclick="sorpresa()">Haz clic aquí</button>
+
+  <p id="extra"></p>
+
+  
+  <img src="foto.jpg" alt="nosotros">
+</div>
+<button onclick="toggleMusica()" id="btnMusica">
+  🎵 Música
+</button>
+
+<audio id="musica" src="cancion.mp3"></audio>
+
+<script>
+let sonando = false;
+
+function toggleMusica() {
+  const audio = document.getElementById("musica");
+  const btn = document.getElementById("btnMusica");
+
+  if (!sonando) {
+    audio.play().catch(err => {
+      console.log("No se pudo reproducir el audio:", err);
+    });
+    btn.innerHTML = "⏸️ Pausar";
+    sonando = true;
+  } else {
+    audio.pause();
+    btn.innerHTML = "🎵 Música";
+    sonando = false;
+  }
+}
+</script>
+<h2>💖 Mini Quiz sobre nosotros 💖</h2>
+
+<div id="quiz">
+
+  <p>¿Cuanto te quiero?</p>
+  <button onclick="respuesta(0, true)">Hasta el infinito</button>
+  <button onclick="respuesta(0, false)">Mucho</button>
+
+  <p>¿Quién dijo "te quiero" primero?</p>
+  <button onclick="respuesta(1, true)">Yo</button>
+  <button onclick="respuesta(1, false)">Tú</button>
+
+<p>¿Cual es nuestra comida favorita?</p>
+  <button onclick="respuesta(2, true)">McDonalds</button>
+  <button onclick="respuesta(2, false)">Burguer King</button>
+
+</div>
+
+<p id="resultadoQuiz"></p>
+<script>
+
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2,
+    speed: Math.random() * 0.5
+  });
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+
+  stars.forEach(s => {
+    ctx.fillRect(s.x, s.y, s.size, s.size);
+    s.y += s.speed;
+
+    if (s.y > canvas.height) {
+      s.y = 0;
+      s.x = Math.random() * canvas.width;
+    }
+  });
+
+  requestAnimationFrame(drawStars);
+}
+
+drawStars();
+
+
+
+function sorpresa() {
+  document.getElementById("extra").innerHTML =
+    "Eres mi estrella favorita en todo el universo ✨❤️";
+}
+
+
+const inicio = new Date("2024-02-20"); // 
+function diasJuntos() {
+  const hoy = new Date();
+  const diff = hoy - inicio;
+  const dias = Math.floor(diff / (1000*60*60*24));
+
+  document.getElementById("extra").innerHTML +=
+    "<br><br>Llevamos " + dias + " días juntos 💕";
+}
+
+setTimeout(diasJuntos, 2000);
+
+
+let puntos = 0;
+let respondidas = [false, false, false];
+
+function respuesta(pregunta, correcta) {
+
+  if (respondidas[pregunta]) return; 
+
+  respondidas[pregunta] = true;
+
+  if (correcta) {
+    puntos++;
+  }
+
+  let totalRespondidas = respondidas.filter(r => r).length;
+
+  if (totalRespondidas === 3) {
+    mostrarResultado();
+  }
+}
+
+function mostrarResultado() {
+  let mensaje = "";
+
+  if (puntos === 3) {
+    mensaje = "Eres perfecta, lo sabes TODO sobre nosotros 💕";
+  } else if (puntos === 2) {
+    mensaje = "Casi perfecto, pero aún te falta un poquito 😏";
+  } else {
+    mensaje = "Mmm... tendremos que crear más recuerdos juntos";
+  }
+
+  document.getElementById("resultadoQuiz").innerHTML = mensaje;
+}
+</script>
+
+
+</body>
+</html>
